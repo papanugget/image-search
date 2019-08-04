@@ -1,37 +1,38 @@
 import React from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import axios from 'axios';
+import { FormControl, TextField, Select, InputLabel, MenuItem } from '@material-ui/core';
+import PixaBay from '../../api/PixaBay'
 import ImageResults from '../image-results/ImageResults';
 
 class Search extends React.Component {
     state = {
         searchText: '',
         amount: 15,
-        apiUrl: "https://pixabay.com/api",
-        apiKey: '13196765-4298ecde5709bfcd49e695be0',
         images: []
     }
     onTextChange = (e) => {
         const val = e.target.value;
-        this.setState({[e.target.name]: val}, () => {
+        this.setState({[e.target.name]: val}, async () => {
             if(val === '') {
                 this.setState({images: []});
             }else{
-                axios.get(`${this.state.apiUrl}/?key=${this.state.apiKey}&q=${this.state.searchText}&image_type=photo&per_page=${this.state.amount}&safesearch=false`)
-                .then(res => this.setState({images: res.data.hits}))
-                .catch(err => console.log(err))
+                const searchTerm = this.state.searchText;
+                try {
+                    const res = await PixaBay.get(`/api/?key=${PixaBay.defaults.params.apiKey}&q=${searchTerm}&image_type=photo&per_page=${this.state.amount}&safesearch=false` );
+                    this.setState({images:res.data.hits});
+                }
+                catch(e) {
+                    console.log('There seems to be a problem' + e);
+                }
             }
         });
-        // console.log(this.state.searchText);
     };
-    onAmountChange = (e, index, value) => this.setState({ amount: e.target.value });
+    onAmountChange = (e) => {
+        console.log(e.target.value);
+        this.setState({ amount: e.target.value });
+    }
+
 
     render() {
-        // console.log(this.state.images);
         return (
             <div>
                 <FormControl fullWidth={true}>
@@ -41,7 +42,6 @@ class Search extends React.Component {
                         name="searchText"
                         value={this.state.searchText}
                         onChange={this.onTextChange}
-                        // floatingLabelText="Search For Images"
                         fullWidth={true}
                     />
                 </FormControl>

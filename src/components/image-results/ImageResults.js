@@ -1,15 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import GridList from '@material-ui/core/GridList/';
-// import GridTile from '@material-ui/core/GridListTile';
 import { GridList, GridListTile, GridListTileBar, IconButton, Dialog, Button } from '@material-ui/core';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import ZoomIn from '@material-ui/icons/ZoomIn';
-// import Icon from '@material-ui/core/Icon/';
-// import IconButton from '@material-ui/core/IconButton';
-// import { Zoom } from '@material-ui/core/';
-// import Dialog from '@material-ui/core/Dialog';
-// import FlatButton from '@material-ui/core/Button'
 
 class ImageResults extends React.Component {
     state = {
@@ -21,13 +14,11 @@ class ImageResults extends React.Component {
             open: true,
             currentImage: img
         });
-        // console.log('Dialog Opened');
     }
     handleClose = () => {
         this.setState({
             open: false,
         });
-        // console.log('Dialog Closed');
     }
     render() {
         let imageListContent;
@@ -68,7 +59,6 @@ class ImageResults extends React.Component {
                 {imageListContent}
                 <Dialog
                     actions={actions}
-                    // modal={false}
                     open={this.state.open}
                     onClose={this.handleClose}
                 >
